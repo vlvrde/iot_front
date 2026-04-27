@@ -1,0 +1,14 @@
+Introducción
+La gestión de una empresa dedicada a la comercialización de productos IoT en la Ciudad de México requiere establecer una comunicación eficiente entre sus técnicos y sus clientes, así como implementar estrategias que permitan visualizar la efectividad y el desempeño de sus productos en el mercado. Esto proporciona a la organización un enfoque más seguro, actualizado y funcional ante su público, al mismo tiempo que fortalece su estructura interna. De esta manera, se favorece una administración más eficiente en los procesos logísticos y en la atención de servicios técnicos, permitiendo mejorar la coordinación entre las áreas operativas y garantizar una atención más organizada a los usuarios.
+En este contexto, se propone el desarrollo de una plataforma de gestión de soporte técnico para una empresa comercializadora de dispositivos IoT domésticos, tales como sensores de gas, sensores de agua y sistemas de apertura automática de zaguán. La plataforma permitirá gestionar solicitudes relacionadas con la instalación de nuevos dispositivos, mantenimiento, reparación y desinstalación de equipos, además de incorporar un sistema de validación de servicios mediante códigos QR para brindar mayor seguridad al cliente. Asimismo, integrará herramientas de análisis estadístico sobre el desempeño de los técnicos y la calidad de los productos, así como la visualización geográfica de reportes activos, lo que facilitará el monitoreo de incidencias y la toma de decisiones dentro de la empresa.
+Objetivos
+El principal objetivo de esta plataforma de gestión de soporte técnico es administrar solicitudes de servicio, optimizar la organización de los técnicos y proporcionar mayor seguridad a los usuarios mediante códigos de validación QR, además, proporcionar a la empresa análisis sobre el desempeño de sus productos, para facilitar la toma de decisiones y poder dar énfasis en sus productos más comprados o atender cualquier falla relacionada con ellos.
+Funciones del Sistema
+Alcance
+Nuestros objetivos específicos para desarrollar esta plataforma son los siguientes: 
+Permitir a los usuarios registrar solicitudes de instalación, mantenimiento, reparación o desinstalación de dispositivos IoT mediante la plataforma.
+Implementar un sistema de generación y validación de códigos QR que permita a los clientes verificar la identidad del técnico que realizará el servicio.
+Facilitar a los técnicos la visualización de sus citas programadas, incluyendo información adecuada al motivo de la visita.
+Proporcionar al administrador herramientas para identificar los productos con mayor número de fallas o mayor demanda, ya sea por tipo de dispositivo o por zona geográfica.
+Incorporar métricas y reportes que permitan analizar el desempeño de los técnicos y detectar patrones de fallas en los dispositivos.
+Visualizar reportes geográficos de incidencias para facilitar el monitoreo del funcionamiento de los productos en distintas zonas.

@@ -1,0 +1,344 @@
+/* ===== WHY US ===== */
+.whyus {
+  background: #ffffff;
+  padding: 6rem 2rem;
+  overflow: hidden;
+}
+
+.whyus-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5rem;
+  align-items: center;
+}
+
+/* ===== CARRUSEL ===== */
+.whyus-image-col {
+  position: relative;
+}
+
+.whyus-carousel {
+  position: relative;
+  border-radius: 20px;
+  overflow: visible;
+}
+
+.whyus-slides {
+  position: relative;
+  border-radius: 20px;
+  overflow: hidden;
+  aspect-ratio: 5 / 5;
+  box-shadow: 0 24px 60px rgba(0, 61, 122, 0.2);
+}
+
+/* Cada slide */
+.whyus-slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.whyus-slide.active {
+  opacity: 1;
+}
+
+.whyus-slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Placeholder cuando no hay imagen */
+.whyus-placeholder {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(145deg, #003d7a 0%, #0059b3 55%, #052c65 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.whyus-placeholder::before {
+  content: '';
+  position: absolute;
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+  background: rgba(79, 195, 247, 0.07);
+  top: -80px;
+  right: -80px;
+}
+
+.whyus-placeholder::after {
+  content: '';
+  position: absolute;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.04);
+  bottom: -60px;
+  left: -60px;
+}
+
+.whyus-placeholder span {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.45);
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  position: relative;
+  z-index: 1;
+}
+
+.whyus-placeholder svg {
+  position: relative;
+  z-index: 1;
+}
+
+/* Flechas */
+.whyus-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.92);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #0059b3;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
+  transition: all 0.2s ease;
+  z-index: 3;
+}
+
+.whyus-arrow:hover {
+  background: #0059b3;
+  color: #ffffff;
+  transform: translateY(-50%) scale(1.08);
+}
+
+.whyus-arrow svg {
+  width: 18px;
+  height: 18px;
+  stroke: currentColor;
+}
+
+.whyus-arrow--prev { left: -16px; }
+.whyus-arrow--next { right: -16px; }
+
+/* Dots */
+.whyus-dots {
+  position: absolute;
+  bottom: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 7px;
+  z-index: 3;
+}
+
+.whyus-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255, 255, 255, 0.45);
+  cursor: pointer;
+  padding: 0;
+  transition: all 0.25s ease;
+}
+
+.whyus-dot.active {
+  background: #ffffff;
+  width: 22px;
+  border-radius: 4px;
+}
+
+/* Badge flotante */
+.whyus-badge {
+  position: absolute;
+  bottom: -18px;
+  right: -18px;
+  background: #FF8C00;
+  color: #ffffff;
+  padding: 0.75rem 1.2rem;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  box-shadow: 0 8px 24px rgba(255, 140, 0, 0.35);
+  white-space: nowrap;
+  z-index: 4;
+}
+
+.whyus-badge svg {
+  stroke: #ffffff;
+  flex-shrink: 0;
+}
+
+/* ===== CONTENIDO ===== */
+.whyus-content-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.whyus-eyebrow {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  color: #0059b3;
+  text-transform: uppercase;
+  margin-bottom: 0.75rem;
+}
+
+.whyus-content-col h2 {
+  font-size: clamp(1.8rem, 3.5vw, 2.5rem);
+  font-weight: 800;
+  color: #0d1f3c;
+  line-height: 1.2;
+  margin: 0 0 1rem 0;
+  letter-spacing: -0.02em;
+}
+
+.whyus-accent {
+  color: #0059b3;
+}
+
+.whyus-intro {
+  font-size: 0.95rem;
+  color: #5a6a80;
+  line-height: 1.7;
+  margin: 0 0 2rem 0;
+  max-width: 440px;
+}
+
+/* Razones */
+.whyus-reasons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem 1.5rem;
+  margin-bottom: 2.5rem;
+}
+
+.whyus-reason {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.85rem;
+}
+
+.whyus-reason-icon {
+  flex-shrink: 0;
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  background: #eef4fb;
+  border: 1px solid #c8ddf5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #0059b3;
+  transition: all 0.25s ease;
+}
+
+.whyus-reason:hover .whyus-reason-icon {
+  background: #0059b3;
+  border-color: #0059b3;
+  color: #ffffff;
+}
+
+.whyus-reason-icon svg {
+  width: 18px;
+  height: 18px;
+  stroke: currentColor;
+}
+
+.whyus-reason-text h4 {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #0d1f3c;
+  margin: 0 0 0.25rem 0;
+  line-height: 1.3;
+}
+
+.whyus-reason-text p {
+  font-size: 0.78rem;
+  color: #6a7a90;
+  line-height: 1.55;
+  margin: 0;
+}
+
+/* CTA */
+.whyus-cta {
+  display: inline-flex;
+  align-items: center;
+  background: #052c65;
+  color: #ffffff;
+  padding: 0.9rem 2.4rem;
+  border-radius: 6px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  align-self: flex-start;
+  letter-spacing: 0.03em;
+}
+
+.whyus-cta:hover {
+  background: #0059b3;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(5, 44, 101, 0.3);
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 960px) {
+  .whyus-container {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+
+  .whyus-image-col {
+    max-width: 500px;
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  .whyus-slides {
+    aspect-ratio: 16 / 9;
+  }
+}
+
+@media (max-width: 600px) {
+  .whyus {
+    padding: 4rem 1rem;
+  }
+
+  .whyus-reasons {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .whyus-arrow--prev { left: 8px; }
+  .whyus-arrow--next { right: 8px; }
+
+  .whyus-badge {
+    bottom: -14px;
+    right: -8px;
+    font-size: 0.72rem;
+    padding: 0.6rem 0.9rem;
+  }
+}

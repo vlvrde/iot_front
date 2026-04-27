@@ -1,0 +1,234 @@
+.navbar {
+  --nb-grad-start: #0059b3;
+  --nb-grad-end:   #003d7a;
+  --nb-accent:     #4FC3F7;
+  --nb-btn-bg:     #ffffff;
+  --nb-btn-color:  #0059b3;
+
+  background: linear-gradient(135deg, var(--nb-grad-start) 0%, var(--nb-grad-end) 90%);
+  width: 100%;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.navbar-top {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 0.8rem 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.navbar-logo a {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #fff;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.navbar-logo span { color: var(--nb-accent); }
+
+.navbar-search-box {
+  display: flex;
+  align-items: center;
+  background: #fff;
+  border-radius: 4px;
+  padding: 0.4rem 0.8rem;
+  flex: 1;
+  min-width: 300px;
+}
+
+.navbar-search-box input {
+  border: none;
+  outline: none;
+  flex: 1;
+  font-size: 0.85rem;
+  color: #333;
+  background: transparent;
+}
+
+.navbar-search-box input::placeholder { color: #999; }
+
+.search-icon-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  padding: 0;
+}
+
+.search-icon-btn svg { stroke: #666; width: 18px; height: 18px; }
+
+.navbar-param-btn {
+  background: #fff;
+  color: var(--nb-grad-start);
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  font-weight: 500;
+  font-size: 0.85rem;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.3s;
+}
+
+.navbar-param-btn:hover { background: #e0f2ff; }
+
+.navbar-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.8rem 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+  width: 100%;
+  box-sizing: border-box;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.navbar-menu {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  margin: 0;
+}
+
+/* ── Dropdown ── */
+.navbar-dropdown { position: relative; }
+
+.navbar-dropdown-btn {
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 0;
+  transition: color 0.3s;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.navbar-dropdown-btn:hover { color: var(--nb-accent); }
+.navbar-dropdown-btn svg  { stroke: currentColor; width: 18px; height: 18px; }
+
+/* Puente invisible que cubre el gap entre el botón y el menú
+   Evita que el mouse "salga" del área y dispare onMouseLeave */
+.navbar-dropdown-bridge {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  padding-top: 10px; /* altura del puente = gap cubierto */
+  min-width: 220px;
+  z-index: 1000;
+}
+
+/* Menú transparente con letras blancas */
+.navbar-dropdown-content {
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 8px;
+  padding: 0.5rem 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.navbar-dropdown-content a {
+  display: block;
+  padding: 0.8rem 1.3rem;
+  color: rgba(255, 255, 255, 0.9);
+  text-decoration: none;
+  font-size: 0.88rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.navbar-dropdown-content a:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  padding-left: 1.6rem;
+}
+
+/* ── Links del menú ── */
+.navbar-menu a {
+  color: rgba(255, 255, 255, 0.9);
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: color 0.3s;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.navbar-menu a:hover { color: var(--nb-accent); }
+.navbar-menu a svg   { stroke: currentColor; width: 18px; height: 18px; }
+
+/* ── Acciones ── */
+.navbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.cart-icon {
+  color: rgba(255, 255, 255, 0.9);
+  text-decoration: none;
+  transition: color 0.3s;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.cart-icon:hover { color: var(--nb-accent); }
+.cart-icon svg   { stroke: currentColor; width: 20px; height: 20px; }
+
+.navbar-btn-access {
+  background: var(--nb-btn-bg);
+  color: var(--nb-btn-color);
+  padding: 0.6rem 1.3rem;
+  border-radius: 4px;
+  font-weight: 600;
+  font-size: 0.85rem;
+  text-decoration: none;
+  transition: all 0.3s;
+  border: none;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+}
+
+.navbar-btn-access:hover {
+  filter: brightness(0.92);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.navbar-btn-access svg { stroke: currentColor; width: 16px; height: 16px; }
+
+/* ── Responsive ── */
+@media (max-width: 1024px) {
+  .navbar-top        { flex-wrap: wrap; }
+  .navbar-search-box { min-width: 250px; }
+  .navbar-param-btn  { display: none; }
+}
+
+@media (max-width: 768px) {
+  .navbar-top    { flex-direction: column; gap: 1rem; }
+  .navbar-search-box { min-width: 100%; }
+  .navbar-bottom { flex-direction: column; gap: 1rem; }
+  .navbar-menu   { flex-wrap: wrap; gap: 1rem; width: 100%; }
+  .navbar-menu a { font-size: 0.8rem; }
+}

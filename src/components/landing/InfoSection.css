@@ -1,0 +1,141 @@
+/* ===== INFO SECTION — superpuesta al pie del hero, alineada a la derecha ===== */
+.info-section {
+  position: relative;
+  margin-top: -50px;
+  padding: 0 4rem 3rem 4rem;
+  z-index: 10;
+}
+
+.info-container {
+  max-width: 960px;   /* más ancho que antes */
+  margin-left: auto;
+  margin-right: 0;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+}
+
+/* ===== CARD BASE ===== */
+.info-card-item {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  padding: 1.15rem 1.4rem;   /* más compacto verticalmente, más ancho */
+  transition: filter 0.2s ease, transform 0.2s ease;
+}
+
+.info-card-item:hover {
+  transform: translateY(-3px);
+  filter: brightness(1.07);
+}
+
+.info-card-item--light {
+  background: #eef4fb;
+  color: #0d2b55;
+}
+
+.info-card-item--dark {
+  background: #003d7a;
+  color: #ffffff;
+}
+
+.info-card-item--accent {
+  background: #0059b3;
+  color: #ffffff;
+}
+
+/* ===== ÍCONO ===== */
+.info-card-icon {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+}
+
+.info-card-item--light .info-card-icon {
+  background: rgba(0, 89, 179, 0.12);
+  color: #0059b3;
+}
+
+.info-card-item--dark .info-card-icon {
+  background: rgba(255, 255, 255, 0.15);
+  color: #4FC3F7;
+}
+
+.info-card-item--accent .info-card-icon {
+  background: rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+}
+
+.info-card-icon svg {
+  width: 21px;
+  height: 21px;
+  stroke: currentColor;
+}
+
+/* ===== TEXTO ===== */
+.info-card-label {
+  display: block;
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 0.25rem;
+  opacity: 0.72;
+}
+
+.info-card-text p {
+  font-size: 0.85rem;
+  font-weight: 700;
+  margin: 0;
+  line-height: 1.3;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 960px) {
+  .info-section {
+    padding: 0 2rem 2rem 2rem;
+    margin-top: -60px;
+  }
+
+  .info-container {
+    max-width: 100%;
+  }
+
+  .info-card-item {
+    padding: 1rem 1rem;
+    gap: 0.75rem;
+  }
+
+  .info-card-icon {
+    width: 36px;
+    height: 36px;
+  }
+
+  .info-card-icon svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  .info-card-text p {
+    font-size: 0.78rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .info-section {
+    margin-top: 0;
+    padding: 0 0 2rem 0;
+  }
+
+  .info-container {
+    grid-template-columns: 1fr;
+  }
+
+  .info-card-item {
+    padding: 1.1rem 1.4rem;
+  }
+}

@@ -1,0 +1,288 @@
+.services {
+  background-color: #ffffff;
+  padding: 5rem 2rem;
+}
+
+.services-container {
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+.services-header {
+  text-align: center;
+  margin-bottom: 4rem;
+}
+
+.services-header h2 {
+  font-size: clamp(2rem, 4vw, 2.8rem);
+  font-weight: 700;
+  color: #181818;
+  margin-bottom: 1rem;
+}
+
+.services-accent { color: #0059b3; }
+
+.services-header p {
+  font-size: 1.05rem;
+  color: #666;
+  margin: 0 auto;
+  line-height: 1.7;
+}
+
+/* ── Grid ── */
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 2.5rem;
+  padding: 2rem 0;
+}
+
+/* ── Card base ── */
+.product-card {
+  background: #f8f9fb;
+  border-radius: 16px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  border: 1px solid #e0e7ef;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+/* ── Hover por tema ── */
+.product-card--red:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 16px 40px rgba(185, 28, 28, 0.15);
+  border-color: #b91c1c;
+}
+
+.product-card--blue:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 16px 40px rgba(0, 89, 179, 0.15);
+  border-color: #0059b3;
+}
+
+.product-card--black:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.18);
+  border-color: #111111;
+}
+
+/* ── Imagen ── */
+.product-image {
+  width: 100%;
+  height: 280px;
+  overflow: hidden;
+  background: linear-gradient(135deg, #e8f4fd 0%, #d1e8f5 100%);
+}
+
+.product-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  transition: transform 0.3s ease;
+}
+
+.product-card:hover .product-image img {
+  transform: scale(1.05);
+}
+
+/* ── Contenido ── */
+.product-content {
+  padding: 2rem 1.8rem;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.product-card h3 {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #181818;
+  margin: 0 0 1rem 0;
+}
+
+.product-description {
+  font-size: 0.95rem;
+  color: #666;
+  line-height: 1.7;
+  margin: 0 0 1.5rem 0;
+}
+
+.product-features {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 1.5rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.product-features li {
+  font-size: 0.9rem;
+  color: #555;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.checkmark {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  background: #0059b3;
+  color: #ffffff;
+  border-radius: 50%;
+  font-size: 0.75rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+/* ── Botones de la card ── */
+.product-actions {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: auto;
+  flex-wrap: wrap;
+}
+
+.product-btn {
+  background-color: #052c65;
+  color: #ffffff;
+  padding: 0.8rem 1.4rem;
+  border-radius: 6px;
+  border: none;
+  font-weight: 600;
+  font-size: 0.88rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  flex: 1;
+}
+
+.product-btn:hover {
+  background-color: #0059b3;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(5, 44, 101, 0.3);
+}
+
+/* Botón "Ver producto" — color cambia por tema */
+.product-detail-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  padding: 1rem 5.6rem;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 0.88rem;
+  text-decoration: none;
+  border: 1.5px solid currentColor;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+
+/* Colores del botón "Ver producto" por tema de card */
+.product-card--red .product-detail-btn {
+  color: #b91c1c;
+  border-color: #b91c1c;
+  background: transparent;
+}
+
+.product-card--red .product-detail-btn:hover {
+  background: #b91c1c;
+  color: #ffffff;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(185, 28, 28, 0.3);
+}
+
+.product-card--blue .product-detail-btn {
+  color: #0059b3;
+  border-color: #0059b3;
+  background: transparent;
+}
+
+.product-card--blue .product-detail-btn:hover {
+  background: #0059b3;
+  color: #ffffff;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 89, 179, 0.3);
+}
+
+.product-card--black .product-detail-btn {
+  color: #111111;
+  border-color: #111111;
+  background: transparent;
+}
+
+.product-card--black .product-detail-btn:hover {
+  background: #111111;
+  color: #ffffff;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+}
+
+/* ── Botón inferior ── */
+.services-footer {
+  display: flex;
+  justify-content: center;
+  margin-top: 3rem;
+}
+
+.services-catalog-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: #052c65;
+  color: #ffffff;
+  padding: 1rem 2.8rem;
+  border-radius: 6px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  border: 2px solid #052c65;
+}
+
+.services-catalog-btn:hover {
+  background: transparent;
+  color: #052c65;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(5, 44, 101, 0.2);
+}
+
+/* ── Responsive ── */
+@media (max-width: 1024px) {
+  .products-grid {
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+  }
+  .product-image { height: 240px; }
+  .product-card h3 { font-size: 1.2rem; }
+}
+
+@media (max-width: 768px) {
+  .services { padding: 3rem 1rem; }
+  .services-header { margin-bottom: 3rem; }
+  .services-header h2 { font-size: clamp(1.6rem, 4vw, 2.2rem); }
+  .products-grid { grid-template-columns: 1fr; gap: 1.5rem; }
+  .product-image { height: 220px; }
+  .product-content { padding: 1.5rem; }
+  .product-card h3 { font-size: 1.1rem; }
+  .product-description { font-size: 0.9rem; }
+  .product-features li { font-size: 0.85rem; }
+  .product-btn { font-size: 0.88rem; }
+}
+
+@media (max-width: 480px) {
+  .services { padding: 2rem 1rem; }
+  .services-header p { font-size: 0.95rem; }
+  .product-image { height: 180px; }
+  .product-content { padding: 1.2rem; }
+  .product-card h3 { font-size: 1rem; }
+  .product-features { gap: 0.6rem; }
+  .product-actions { flex-direction: column; }
+  .product-detail-btn { text-align: center; }
+}
