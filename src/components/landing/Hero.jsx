@@ -20,8 +20,9 @@ export default function Hero() {
 
         {/* Título principal */}
         <h1>
-          Transforma tu casa en un<br />
-          <span className="hero-accent">hogar inteligente</span>
+          Transforma tu casa<br />
+          <span >en un hogar </span>
+          <br/> inteligente
         </h1>
 
         {/* Servicios en línea */}
@@ -36,6 +37,7 @@ export default function Hero() {
         {/* Descripción */}
         <p>
           Dispositivos IoT con técnicos certificados en toda la Ciudad de México.
+          ¡Compra y Registrate ya!
         </p>
 
         {/* Stats rápidos */}

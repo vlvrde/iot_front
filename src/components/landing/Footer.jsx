@@ -42,7 +42,7 @@ export default function Footer() {
       </div>
 
       <div className="footer-bottom">
-        <p>© 2025 IoTech · Ciudad de México · Todos los derechos reservados</p>
+        <p>© 2026 IoTech · Ciudad de México · Todos los derechos reservados</p>
       </div>
 
     </footer>

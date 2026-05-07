@@ -29,7 +29,7 @@ const products = [
     description: 'Abre tu zaguán de forma segura y remota. Integración con Alexa para control por voz.',
     image: iotImg,
     features: ['Control remoto', 'Activación por voz', 'Registro de accesos'],
-    route: '/catalogo/apertura-zaguán',
+    route: '/catalogo/apertura-zaguan',
     theme: 'black',
   },
 ]
@@ -78,7 +78,7 @@ export default function Services() {
 
         {/* Botón global inferior */}
         <div className="services-footer">
-          <Link to="/catalogo" className="services-catalog-btn">
+          <Link to="/carrito" className="services-catalog-btn">
             Adquirir Productos
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" width="16" height="16">
               <path d="M5 12h14M12 5l7 7-7 7"/>

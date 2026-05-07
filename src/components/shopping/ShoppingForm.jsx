@@ -194,7 +194,6 @@ export default function ShoppingForm() {
             <div className="shop-cart-inner">
               <div className="shop-cart-header">
                 <div className="shop-cart-title">
-                  <CartIcon size={18} />
                   <h3>Carrito</h3>
                 </div>
                 {cartCount > 0 && (
