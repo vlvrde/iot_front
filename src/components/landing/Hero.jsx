@@ -21,8 +21,7 @@ export default function Hero() {
         {/* Título principal */}
         <h1>
           Transforma tu casa<br />
-          <span >en un hogar </span>
-          <br/> inteligente
+          <span >en un hogar inteligente </span>
         </h1>
 
         {/* Servicios en línea */}
