@@ -346,6 +346,41 @@
   text-decoration: underline;
 }
 
+/* ===== BACK BUTTON ===== */
+.login-back-btn {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 1.5px solid #d0dcea;
+  background: #eef4fb;
+  color: #0059b3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  z-index: 2;
+  padding: 0;
+}
+
+.login-back-btn:hover {
+  background: #0059b3;
+  border-color: #0059b3;
+  color: #ffffff;
+  transform: translateX(-2px);
+}
+
+.login-back-btn svg {
+  width: 16px;
+  height: 16px;
+  stroke: currentColor;
+  stroke-width: 2.2;
+  fill: none;
+}
+
 /* ===== RESPONSIVE ===== */
 @media (max-width: 520px) {
   .login-card {

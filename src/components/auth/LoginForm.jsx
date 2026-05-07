@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import bgImage from '../../assets/images/background.png'
 import './LoginForm.css'
 
@@ -7,6 +7,8 @@ export default function LoginForm() {
   const [form, setForm] = useState({ email: '', password: '', remember: false })
   const [showPassword, setShowPassword] = useState(false)
   const [loading, setLoading] = useState(false)
+
+  const navigate = useNavigate()
 
   const handleChange = e => {
     const { name, value, type, checked } = e.target
@@ -25,6 +27,17 @@ export default function LoginForm() {
       <div className="login-overlay" />
 
       <div className="login-card">
+
+        <button
+          type="button"
+          className="login-back-btn"
+          onClick={() => navigate(-1)}
+          aria-label="Regresar"
+        >
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <polyline points="15 18 9 12 15 6"/>
+          </svg>
+        </button>
 
         {/* Ícono de usuario */}
         <div className="login-avatar">
