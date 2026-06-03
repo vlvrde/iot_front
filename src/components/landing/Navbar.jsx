@@ -1,10 +1,19 @@
 import './Navbar.css'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useState, useRef } from 'react'
+import { useAuth } from '../../context/AuthContext'
+
+const DASHBOARD_POR_ROL = {
+  cliente:       '/cliente/dashboard',
+  tecnico:       '/tecnico/citas',
+  administrador: '/admin/dashboard',
+}
 
 export default function Navbar({ accentColor }) {
   const [dropdownOpen, setDropdownOpen] = useState(false)
   const closeTimer = useRef(null)
+  const { isAuthenticated, user } = useAuth()
+  const navigate = useNavigate()
 
   const handleMouseEnter = () => {
     clearTimeout(closeTimer.current)
@@ -12,8 +21,15 @@ export default function Navbar({ accentColor }) {
   }
 
   const handleMouseLeave = () => {
-    // Delay de 150ms antes de cerrar — da tiempo al mouse de llegar al menú
     closeTimer.current = setTimeout(() => setDropdownOpen(false), 150)
+  }
+
+  const handleAccesoBtn = () => {
+    if (isAuthenticated && user?.rol) {
+      navigate(DASHBOARD_POR_ROL[user.rol] || '/cliente/dashboard')
+    } else {
+      navigate('/login')
+    }
   }
 
   const style = accentColor ? {
@@ -62,7 +78,6 @@ export default function Navbar({ accentColor }) {
             </button>
 
             {dropdownOpen && (
-              /* El puente cubre el gap entre botón y menú */
               <div className="navbar-dropdown-bridge">
                 <div className="navbar-dropdown-content">
                   <Link to="/catalogo/sensor-gas">Sensor de gas</Link>
@@ -90,13 +105,26 @@ export default function Navbar({ accentColor }) {
               <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
             </svg>
           </Link>
-          <Link to="/login" className="navbar-btn-access">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
-              <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
-            </svg>
-            Acceso A Miembros
-          </Link>
+
+          <button className="navbar-btn-access" onClick={handleAccesoBtn}>
+            {isAuthenticated ? (
+              <>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
+                  <rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/>
+                </svg>
+                Mi Dashboard
+              </>
+            ) : (
+              <>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                  <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                </svg>
+                Acceso A Miembros
+              </>
+            )}
+          </button>
         </div>
       </div>
     </header>

@@ -1,25 +1,50 @@
 import { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useLocation } from 'react-router-dom'
+import { useAuth } from '../../context/AuthContext'
 import bgImage from '../../assets/images/background.png'
 import './LoginForm.css'
 
 export default function LoginForm() {
-  const [form, setForm] = useState({ email: '', password: '', remember: false })
+  const [form, setForm]             = useState({ email: '', password: '' })
   const [showPassword, setShowPassword] = useState(false)
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading]       = useState(false)
+  const [error, setError]           = useState('')
 
-  const navigate = useNavigate()
+  const { login } = useAuth()
+  const navigate  = useNavigate()
+  const location  = useLocation()
 
   const handleChange = e => {
-    const { name, value, type, checked } = e.target
-    setForm(prev => ({ ...prev, [name]: type === 'checkbox' ? checked : value }))
+    const { name, value } = e.target
+    setForm(prev => ({ ...prev, [name]: value }))
+    setError('')
   }
 
   const handleSubmit = async e => {
     e.preventDefault()
     setLoading(true)
-    // Aquí conectas con tu backend
-    setTimeout(() => setLoading(false), 1500)
+    setError('')
+
+    try {
+      const usuario = await login(form.email, form.password)
+
+      // localStorage ya fue actualizado dentro de login()
+      // navigate() ahora funciona porque AuthContext ya tiene el nuevo user
+      const from = location.state?.from
+      if (from) {
+        navigate(from, { replace: true })
+        return
+      }
+
+      if (usuario.rol === 'administrador') navigate('/admin/dashboard', { replace: true })
+      else if (usuario.rol === 'tecnico')  navigate('/tecnico/citas',   { replace: true })
+      else                                 navigate('/cliente/dashboard', { replace: true })
+
+    } catch (err) {
+      setError(err.message)
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -28,18 +53,13 @@ export default function LoginForm() {
 
       <div className="login-card">
 
-        <button
-          type="button"
-          className="login-back-btn"
-          onClick={() => navigate(-1)}
-          aria-label="Regresar"
-        >
+        <button type="button" className="login-back-btn"
+          onClick={() => navigate(-1)} aria-label="Regresar">
           <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
             <polyline points="15 18 9 12 15 6"/>
           </svg>
         </button>
 
-        {/* Ícono de usuario */}
         <div className="login-avatar">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
             <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
@@ -52,41 +72,29 @@ export default function LoginForm() {
         <h1>Inicia Sesión</h1>
         <p className="login-subtitle">Ingresa tus datos:</p>
 
+        {error && <div className="login-error" role="alert">{error}</div>}
+
         <form className="login-form" onSubmit={handleSubmit}>
 
           <div className="login-field">
             <label htmlFor="email">Correo</label>
-            <input
-              id="email"
-              name="email"
-              type="email"
+            <input id="email" name="email" type="email"
               placeholder="ej. usuario@dominio.com"
-              value={form.email}
-              onChange={handleChange}
-              required
-              autoComplete="email"
-            />
+              value={form.email} onChange={handleChange}
+              required autoComplete="email" />
           </div>
 
           <div className="login-field">
             <label htmlFor="password">Contraseña</label>
             <div className="login-password-wrap">
-              <input
-                id="password"
-                name="password"
+              <input id="password" name="password"
                 type={showPassword ? 'text' : 'password'}
-                placeholder="Solo letras, números, espacios, comas, puntos, y guiones."
-                value={form.password}
-                onChange={handleChange}
-                required
-                autoComplete="current-password"
-              />
-              <button
-                type="button"
-                className="login-eye"
+                placeholder="Tu contraseña"
+                value={form.password} onChange={handleChange}
+                required autoComplete="current-password" />
+              <button type="button" className="login-eye"
                 onClick={() => setShowPassword(s => !s)}
-                aria-label="Mostrar contraseña"
-              >
+                aria-label="Mostrar contraseña">
                 {showPassword ? (
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" width="16" height="16">
                     <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24" />
@@ -111,7 +119,6 @@ export default function LoginForm() {
           </button>
 
         </form>
-
       </div>
     </div>
   )

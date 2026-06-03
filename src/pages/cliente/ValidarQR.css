@@ -1,0 +1,348 @@
+/* ══════════════════════════════════
+   VALIDAR QR
+   ══════════════════════════════════ */
+
+.qr-page {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  max-width: 560px;
+  margin: 0 auto;
+}
+
+/* ── Card de instrucciones ── */
+.qr-info-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.2rem;
+  background: #eef4fb;
+  border: 1px solid #c8ddf5;
+  border-radius: 14px;
+  padding: 1.4rem 1.6rem;
+}
+
+.qr-info-icon {
+  flex-shrink: 0;
+  color: #0059b3;
+  opacity: 0.7;
+}
+
+.qr-info-icon svg { stroke: currentColor; }
+
+.qr-info-text h3 {
+  font-family: 'Syne', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #0d1f3c;
+  margin: 0 0 0.4rem 0;
+}
+
+.qr-info-text p {
+  font-size: 0.82rem;
+  color: #4a6a8a;
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* ── Área del escáner ── */
+.qr-scanner-area {
+  background: #fff;
+  border-radius: 18px;
+  border: 1px solid #EAEAE8;
+  overflow: hidden;
+  min-height: 380px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── Estado idle ── */
+.qr-idle {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 1.2rem;
+  padding: 3rem 2rem;
+}
+
+.qr-idle-icon {
+  width: 88px;
+  height: 88px;
+  border-radius: 50%;
+  background: #f0f4f8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #9CA3AF;
+}
+
+.qr-idle p {
+  font-size: 0.875rem;
+  color: #6B7280;
+  line-height: 1.6;
+  max-width: 300px;
+}
+
+.qr-btn-start {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: #1A1A2E;
+  color: #fff;
+  padding: 0.85rem 2rem;
+  border-radius: 10px;
+  border: none;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+
+.qr-btn-start:hover {
+  background: #667eea;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(102,126,234,0.3);
+}
+
+/* ── Estado scanning ── */
+.qr-scanning {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.2rem;
+  padding: 1.5rem;
+  width: 100%;
+}
+
+.qr-viewfinder {
+  position: relative;
+  width: 280px;
+  height: 280px;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+/* El elemento del lector QR ocupa todo el viewfinder */
+.qr-reader {
+  width: 100% !important;
+  height: 100% !important;
+  border: none !important;
+}
+
+/* Ocultar botones internos de html5-qrcode */
+.qr-reader button { display: none !important; }
+.qr-reader select { display: none !important; }
+#qr-reader__scan_region { border: none !important; }
+
+/* Esquinas decorativas */
+.qr-corner {
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  border-color: #667eea;
+  border-style: solid;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.qr-corner--tl { top: 8px; left: 8px;  border-width: 3px 0 0 3px; border-radius: 4px 0 0 0; }
+.qr-corner--tr { top: 8px; right: 8px; border-width: 3px 3px 0 0; border-radius: 0 4px 0 0; }
+.qr-corner--bl { bottom: 8px; left: 8px;  border-width: 0 0 3px 3px; border-radius: 0 0 0 4px; }
+.qr-corner--br { bottom: 8px; right: 8px; border-width: 0 3px 3px 0; border-radius: 0 0 4px 0; }
+
+/* Línea de escaneo animada */
+.qr-scan-line {
+  position: absolute;
+  left: 8px;
+  right: 8px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #667eea, transparent);
+  animation: qr-scan 2s ease-in-out infinite;
+  z-index: 2;
+  pointer-events: none;
+}
+
+@keyframes qr-scan {
+  0%   { top: 10%; opacity: 1; }
+  50%  { top: 88%; opacity: 1; }
+  100% { top: 10%; opacity: 1; }
+}
+
+.qr-scanning-hint {
+  font-size: 0.82rem;
+  color: #9CA3AF;
+  text-align: center;
+}
+
+.qr-btn-stop {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: #F3F4F6;
+  color: #6B7280;
+  padding: 0.7rem 1.4rem;
+  border-radius: 10px;
+  border: none;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: inherit;
+}
+
+.qr-btn-stop:hover { background: #FEE2E2; color: #EF4444; }
+
+/* ── Estado loading ── */
+.qr-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.2rem;
+  padding: 3rem 2rem;
+}
+
+.qr-spinner {
+  width: 44px;
+  height: 44px;
+  border: 3.5px solid #E5E7EB;
+  border-top-color: #667eea;
+  border-radius: 50%;
+  animation: qr-spin 0.8s linear infinite;
+}
+
+@keyframes qr-spin { to { transform: rotate(360deg); } }
+
+.qr-loading p {
+  font-size: 0.875rem;
+  color: #6B7280;
+}
+
+/* ── Resultados ── */
+.qr-result {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 1rem;
+  padding: 2.5rem 2rem;
+  width: 100%;
+}
+
+.qr-result-icon {
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.qr-result-icon--ok    { background: #D1FAE5; color: #10B981; }
+.qr-result-icon--error { background: #FEE2E2; color: #EF4444; }
+.qr-result-icon svg    { stroke: currentColor; }
+
+.qr-result h3 {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: #1A1A2E;
+  letter-spacing: -0.02em;
+  margin: 0;
+}
+
+.qr-result p {
+  font-size: 0.875rem;
+  color: #6B7280;
+  line-height: 1.6;
+  max-width: 340px;
+  margin: 0;
+}
+
+/* Card del técnico verificado */
+.qr-tecnico-card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background: #F9FAFB;
+  border: 1px solid #EAEAE8;
+  border-radius: 12px;
+  padding: 1rem 1.4rem;
+  text-align: left;
+  width: 100%;
+  max-width: 340px;
+}
+
+.qr-tecnico-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: #fff;
+  overflow: hidden;
+}
+
+.qr-tecnico-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.qr-tecnico-avatar svg { stroke: #fff; }
+
+.qr-tecnico-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.qr-tecnico-info strong {
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: #1A1A2E;
+}
+
+.qr-tecnico-info span {
+  font-size: 0.75rem;
+  color: #9CA3AF;
+}
+
+.qr-folio {
+  font-family: 'Courier New', monospace !important;
+  font-size: 0.72rem !important;
+  color: #667eea !important;
+  font-weight: 600 !important;
+}
+
+.qr-btn-retry {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: #F3F4F6;
+  color: #6B7280;
+  padding: 0.75rem 1.6rem;
+  border-radius: 10px;
+  border: none;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: inherit;
+  margin-top: 0.5rem;
+}
+
+.qr-btn-retry:hover {
+  background: #1A1A2E;
+  color: #fff;
+}
+
+/* ── Responsive ── */
+@media (max-width: 600px) {
+  .qr-info-card { flex-direction: column; gap: 0.75rem; }
+  .qr-viewfinder { width: 240px; height: 240px; }
+}

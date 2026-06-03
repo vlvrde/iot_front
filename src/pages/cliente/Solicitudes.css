@@ -1,0 +1,427 @@
+/* ══════════════════════════════════
+   SOLICITUDES — página del cliente
+   ══════════════════════════════════ */
+
+/* ── Encabezado ── */
+.sol-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.sol-count {
+  font-size: 0.82rem;
+  color: #9CA3AF;
+  font-weight: 500;
+}
+
+.sol-btn-new {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: #1A1A2E;
+  color: #fff;
+  padding: 0.7rem 1.4rem;
+  border-radius: 10px;
+  border: none;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+
+.sol-btn-new:hover:not(:disabled) {
+  background: #667eea;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(102,126,234,0.3);
+}
+
+.sol-btn-new:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+/* Aviso sin dispositivos */
+.sol-notice {
+  background: #FEF3C7;
+  color: #92400E;
+  border-radius: 10px;
+  padding: 0.9rem 1.2rem;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  margin-bottom: 1.5rem;
+  border: 1px solid #FDE68A;
+}
+
+/* ── Lista ── */
+.sol-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* ── Card ── */
+.sol-card {
+  background: #fff;
+  border-radius: 14px;
+  padding: 1.4rem 1.6rem;
+  border: 1px solid #EAEAE8;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.sol-card:hover {
+  box-shadow: 0 8px 28px rgba(26,26,46,0.08);
+  transform: translateY(-2px);
+}
+
+.sol-card-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.sol-card-left {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  flex: 1;
+  min-width: 0;
+}
+
+.sol-card-tipo {
+  font-family: 'Syne', sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #1A1A2E;
+  letter-spacing: -0.01em;
+}
+
+.sol-card-desc {
+  font-size: 0.875rem;
+  color: #6B7280;
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* Badge estado */
+.sol-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.85rem;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* Meta */
+.sol-card-meta {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  flex-wrap: wrap;
+}
+
+.sol-card-meta span {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.78rem;
+  color: #9CA3AF;
+}
+
+.sol-card-meta svg { stroke: #9CA3AF; flex-shrink: 0; }
+
+/* Técnico */
+.sol-card-tecnico {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid #F3F4F6;
+  font-size: 0.82rem;
+  color: #6B7280;
+}
+
+.sol-card-tecnico svg { stroke: #9CA3AF; }
+.sol-card-tecnico strong { color: #1A1A2E; }
+
+/* ── Estado vacío ── */
+.sol-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 4rem 2rem;
+  gap: 1rem;
+}
+
+.sol-empty-icon {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: #F3F4F6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #9CA3AF;
+}
+
+.sol-empty h3 {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #1A1A2E;
+}
+
+.sol-empty p {
+  font-size: 0.875rem;
+  color: #9CA3AF;
+  max-width: 340px;
+  line-height: 1.6;
+}
+
+/* ── Loading / Error ── */
+.sol-loading {
+  padding: 3rem;
+  text-align: center;
+  color: #9CA3AF;
+  font-size: 0.875rem;
+}
+
+.sol-error {
+  padding: 1rem 1.2rem;
+  background: #FEE2E2;
+  color: #991B1B;
+  border-radius: 10px;
+  font-size: 0.875rem;
+}
+
+/* ══════════════════════════════════
+   MODAL — Nueva Solicitud
+   ══════════════════════════════════ */
+.sol-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  backdrop-filter: blur(4px);
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.sol-modal {
+  background: #fff;
+  border-radius: 18px;
+  width: 100%;
+  max-width: 600px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 24px 60px rgba(0,0,0,0.2);
+  display: flex;
+  flex-direction: column;
+}
+
+.sol-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.4rem 1.8rem;
+  border-bottom: 1px solid #EAEAE8;
+  position: sticky;
+  top: 0;
+  background: #fff;
+  z-index: 1;
+  border-radius: 18px 18px 0 0;
+}
+
+.sol-modal-header h2 {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #1A1A2E;
+  letter-spacing: -0.02em;
+  margin: 0;
+}
+
+.sol-modal-close {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #9CA3AF;
+  display: flex;
+  align-items: center;
+  padding: 4px;
+  border-radius: 6px;
+  transition: all 0.15s;
+}
+
+.sol-modal-close:hover { background: #F3F4F6; color: #1A1A2E; }
+
+.sol-modal-error {
+  margin: 1rem 1.8rem 0;
+  padding: 0.75rem 1rem;
+  background: #FEE2E2;
+  color: #991B1B;
+  border-radius: 8px;
+  font-size: 0.82rem;
+}
+
+.sol-modal-form {
+  padding: 1.4rem 1.8rem 1.8rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* Títulos de sección dentro del modal */
+.sol-modal-section {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: #9CA3AF;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  padding-bottom: 0.4rem;
+  border-bottom: 1px solid #F3F4F6;
+}
+
+/* Grid de campos */
+.sol-modal-fields {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.85rem;
+}
+
+.sol-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.sol-field--full { grid-column: 1 / -1; }
+
+.sol-field label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #1A1A2E;
+}
+
+.sol-field input,
+.sol-field select,
+.sol-field textarea {
+  padding: 0.65rem 0.85rem;
+  border: 1.5px solid #E5E7EB;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  color: #1A1A2E;
+  background: #F9FAFB;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  font-family: inherit;
+  resize: vertical;
+}
+
+.sol-field input:focus,
+.sol-field select:focus,
+.sol-field textarea:focus {
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102,126,234,0.12);
+  background: #fff;
+}
+
+/* Acciones del modal */
+.sol-modal-actions {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+.sol-modal-cancel {
+  flex: 1;
+  padding: 0.8rem;
+  background: #F3F4F6;
+  color: #6B7280;
+  border: none;
+  border-radius: 10px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: inherit;
+}
+
+.sol-modal-cancel:hover { background: #E5E7EB; color: #1A1A2E; }
+
+.sol-modal-submit {
+  flex: 1;
+  padding: 0.8rem;
+  background: #1A1A2E;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: inherit;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 42px;
+}
+
+.sol-modal-submit:hover:not(:disabled) {
+  background: #667eea;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(102,126,234,0.3);
+}
+
+.sol-modal-submit:disabled { opacity: 0.65; cursor: not-allowed; }
+
+.sol-spinner {
+  width: 18px;
+  height: 18px;
+  border: 2.5px solid rgba(255,255,255,0.3);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: sol-spin 0.7s linear infinite;
+}
+
+@keyframes sol-spin { to { transform: rotate(360deg); } }
+
+/* ── Responsive ── */
+@media (max-width: 600px) {
+  .sol-modal-fields { grid-template-columns: 1fr; }
+  .sol-field--full  { grid-column: auto; }
+  .sol-modal-form   { padding: 1.2rem 1.2rem 1.4rem; }
+}
+
+/* En co- (ShoppingForm) y sol- (Solicitudes) y login- (Register) */
+.co-select,
+.sol-select,
+.login-select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%239CA3AF' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.85rem center;
+  padding-right: 2.5rem;
+  cursor: pointer;
+}
+
+.login-input-readonly {
+  background: #f3f4f6;
+  color: #9CA3AF;
+  cursor: not-allowed;
+}

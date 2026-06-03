@@ -1,0 +1,216 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=Syne:wght@600;700;800&display=swap');
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+.tl-root {
+  display: flex;
+  min-height: 100vh;
+  font-family: 'DM Sans', sans-serif;
+  background: #F0F4F8;
+  color: #0d1f3c;
+}
+
+/* ── Overlay móvil ── */
+.tl-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 99;
+}
+
+/* ── Hamburguesa flotante ── */
+.tl-hamburger {
+  display: none;
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
+  z-index: 101;
+  background: #0F4C75;
+  border: none;
+  border-radius: 10px;
+  padding: 8px;
+  color: #fff;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(15,76,117,0.4);
+}
+
+/* ── Sidebar azul petróleo ── */
+.tl-sidebar {
+  width: 260px;
+  min-height: 100vh;
+  background: #0F4C75;
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 0; left: 0;
+  z-index: 100;
+  transition: transform 0.3s ease;
+}
+
+/* Brand */
+.tl-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  padding: 1.8rem 1.6rem 1.4rem;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.tl-brand-icon {
+  width: 36px;
+  height: 36px;
+  background: rgba(255,255,255,0.15);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  flex-shrink: 0;
+}
+
+.tl-brand h2 {
+  font-family: 'Syne', sans-serif;
+  font-size: 1rem;
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  margin: 0;
+}
+
+.tl-brand span {
+  font-size: 0.68rem;
+  color: rgba(255,255,255,0.45);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+/* Usuario */
+.tl-user {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  padding: 1.2rem 1.6rem;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.tl-avatar {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 0.9rem;
+  flex-shrink: 0;
+}
+
+.tl-user-info { overflow: hidden; }
+
+.tl-user-info strong {
+  display: block;
+  color: #fff;
+  font-size: 0.85rem;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.tl-user-info span {
+  font-size: 0.68rem;
+  color: rgba(255,255,255,0.5);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+/* Nav */
+.tl-nav {
+  flex: 1;
+  padding: 1.2rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.tl-nav-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 0.9rem;
+  border-radius: 10px;
+  cursor: pointer;
+  color: rgba(255,255,255,0.55);
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: all 0.18s ease;
+  border: none;
+  background: transparent;
+  width: 100%;
+  text-align: left;
+  font-family: inherit;
+}
+
+.tl-nav-item:hover {
+  background: rgba(255,255,255,0.08);
+  color: rgba(255,255,255,0.9);
+}
+
+.tl-nav-item.active {
+  background: rgba(255,255,255,0.15);
+  color: #ffffff;
+}
+
+.tl-nav-item.active svg { stroke: #7DD3FC; }
+
+/* Footer */
+.tl-footer {
+  padding: 1rem;
+  border-top: 1px solid rgba(255,255,255,0.1);
+}
+
+.tl-logout {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 0.9rem;
+  border-radius: 10px;
+  cursor: pointer;
+  color: rgba(255,255,255,0.45);
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: all 0.18s ease;
+  border: none;
+  background: transparent;
+  width: 100%;
+  text-align: left;
+  font-family: inherit;
+}
+
+.tl-logout:hover {
+  background: rgba(239,68,68,0.15);
+  color: #FCA5A5;
+}
+
+.tl-logout:hover svg { stroke: #FCA5A5; }
+
+/* ── Contenido principal ── */
+.tl-main {
+  margin-left: 260px;
+  flex: 1;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .tl-sidebar    { transform: translateX(-100%); }
+  .tl-sidebar.open { transform: translateX(0); }
+  .tl-main       { margin-left: 0; }
+  .tl-hamburger  { display: flex; }
+}

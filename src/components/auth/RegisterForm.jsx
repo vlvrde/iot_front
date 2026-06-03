@@ -1,65 +1,120 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { useAuth } from '../../context/AuthContext'
 import bgImage from '../../assets/images/background.png'
+import { ESTADO_CDMX, SelectAlcaldia } from '../../constants/cdmx'
 import './RegisterForm.css'
+
+function RegistroExitoso({ nombre, onContinuar }) {
+  return (
+    <div className="register-success">
+      <div className="register-success-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+          strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+          <circle cx="12" cy="12" r="10" />
+          <polyline points="9 12 11.5 14.5 16 9.5" />
+        </svg>
+      </div>
+      <h2>¡Registro exitoso!</h2>
+      <p>Bienvenido, <strong>{nombre}</strong>.<br/>Tu cuenta ha sido creada correctamente.</p>
+      <button className="login-btn" onClick={onContinuar}>
+        Ir a mi panel
+      </button>
+      <div className="login-links" style={{ marginTop: '1rem' }}>
+        ¿Quieres explorar primero? <Link to="/">Ir al inicio</Link>
+      </div>
+    </div>
+  )
+}
 
 export default function RegisterForm() {
   const [form, setForm] = useState({
-    nombre: '',
-    apellidoPaterno: '',
-    apellidoMaterno: '',
-    correo: '',
-    telefono: '',
-    calle: '',
-    numInterior: '',
-    numExterior: '',
-    codigoPostal: '',
-    colonia: '',
-    delegacion: '',
-    estado: '',
-    password: '',
-    confirmPassword: ''
+    nombre: '', apellidoPaterno: '', apellidoMaterno: '',
+    correo: '', telefono: '',
+    calle: '', numInterior: '', numExterior: '',
+    codigoPostal: '', colonia: '', delegacion: '',
+    password: '', confirmPassword: '',
   })
-  const [showPassword, setShowPassword] = useState(false)
+  const [showPassword,        setShowPassword]        = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
-  const [loading, setLoading] = useState(false)
+  const [loading,  setLoading]  = useState(false)
+  const [error,    setError]    = useState('')
+  const [success,  setSuccess]  = useState(false)
+  const [userName, setUserName] = useState('')
 
-  const navigate = useNavigate()
+  const { register } = useAuth()
+  const navigate     = useNavigate()
 
   const handleChange = e => {
     const { name, value } = e.target
     setForm(prev => ({ ...prev, [name]: value }))
+    setError('')
   }
 
   const handleSubmit = async e => {
     e.preventDefault()
     if (form.password !== form.confirmPassword) {
-      alert('Las contraseñas no coinciden')
+      setError('Las contraseñas no coinciden.')
+      return
+    }
+    if (form.password.length < 8) {
+      setError('La contraseña debe tener al menos 8 caracteres.')
       return
     }
     setLoading(true)
-    // Aquí conectas con tu backend
-    setTimeout(() => setLoading(false), 1500)
+    setError('')
+    try {
+      await register({
+        nombre:        form.nombre,
+        paterno:       form.apellidoPaterno,
+        materno:       form.apellidoMaterno || undefined,
+        email:         form.correo,
+        telefono:      form.telefono        || undefined,
+        password:      form.password,
+        rol:           'cliente',
+        calle:         form.calle,
+        num_exterior:  form.numExterior,
+        num_interior:  form.numInterior     || undefined,
+        codigo_postal: form.codigoPostal,
+        colonia:       form.colonia,
+        delegacion:    form.delegacion,
+        estado:        ESTADO_CDMX,          // siempre CDMX
+      })
+      setUserName(form.nombre)
+      setSuccess(true)
+    } catch (err) {
+      setError(err.message)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  if (success) {
+    return (
+      <div className="login-page" style={{ backgroundImage: `url(${bgImage})` }}>
+        <div className="login-overlay" />
+        <div className="login-card">
+          <RegistroExitoso
+            nombre={userName}
+            onContinuar={() => navigate('/cliente/dashboard', { replace: true })}
+          />
+        </div>
+      </div>
+    )
   }
 
   return (
     <div className="login-page" style={{ backgroundImage: `url(${bgImage})` }}>
       <div className="login-overlay" />
-
       <div className="register-card">
 
-        <button
-          type="button"
-          className="login-back-btn"
-          onClick={() => navigate(-1)}
-          aria-label="Regresar"
-        >
+        <button type="button" className="login-back-btn"
+          onClick={() => navigate(-1)} aria-label="Regresar">
           <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
             <polyline points="15 18 9 12 15 6"/>
           </svg>
         </button>
 
-        {/* Ícono de usuario */}
         <div className="register-avatar">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
             <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
@@ -72,80 +127,41 @@ export default function RegisterForm() {
         <h1>Crear Cuenta</h1>
         <p className="login-subtitle">Completa tus datos:</p>
 
+        {error && <div className="login-error" role="alert">{error}</div>}
+
         <form className="register-form" onSubmit={handleSubmit}>
 
-          {/* Nombre y Apellidos */}
           <div className="form-row">
             <div className="login-field">
               <label htmlFor="nombre">Nombre *</label>
-              <input
-                id="nombre"
-                name="nombre"
-                type="text"
-                placeholder="Juan"
-                value={form.nombre}
-                onChange={handleChange}
-                required
-              />
+              <input id="nombre" name="nombre" type="text" placeholder="Juan"
+                value={form.nombre} onChange={handleChange} required />
             </div>
-
             <div className="login-field">
               <label htmlFor="apellidoPaterno">Apellido Paterno *</label>
-              <input
-                id="apellidoPaterno"
-                name="apellidoPaterno"
-                type="text"
-                placeholder="García"
-                value={form.apellidoPaterno}
-                onChange={handleChange}
-                required
-              />
+              <input id="apellidoPaterno" name="apellidoPaterno" type="text" placeholder="García"
+                value={form.apellidoPaterno} onChange={handleChange} required />
             </div>
-
             <div className="login-field">
-              <label htmlFor="apellidoMaterno">Apellido Materno *</label>
-              <input
-                id="apellidoMaterno"
-                name="apellidoMaterno"
-                type="text"
-                placeholder="López"
-                value={form.apellidoMaterno}
-                onChange={handleChange}
-                required
-              />
+              <label htmlFor="apellidoMaterno">Apellido Materno</label>
+              <input id="apellidoMaterno" name="apellidoMaterno" type="text" placeholder="López"
+                value={form.apellidoMaterno} onChange={handleChange} />
             </div>
           </div>
 
-          {/* Correo y Teléfono */}
           <div className="form-row">
             <div className="login-field">
               <label htmlFor="correo">Correo Electrónico *</label>
-              <input
-                id="correo"
-                name="correo"
-                type="email"
-                placeholder="usuario@dominio.com"
-                value={form.correo}
-                onChange={handleChange}
-                required
-              />
+              <input id="correo" name="correo" type="email" placeholder="usuario@dominio.com"
+                value={form.correo} onChange={handleChange} required />
             </div>
-
             <div className="login-field">
-              <label htmlFor="telefono">Teléfono *</label>
-              <input
-                id="telefono"
-                name="telefono"
-                type="tel"
-                placeholder="5512345678"
-                value={form.telefono}
-                onChange={handleChange}
-                required
-              />
+              <label htmlFor="telefono">Teléfono</label>
+              <input id="telefono" name="telefono" type="tel" placeholder="5512345678"
+                value={form.telefono} onChange={handleChange} />
             </div>
           </div>
 
-          {/* Dirección */}
           <div className="form-row-full">
             <h3 className="form-section-title">Domicilio</h3>
           </div>
@@ -153,100 +169,58 @@ export default function RegisterForm() {
           <div className="form-row">
             <div className="login-field">
               <label htmlFor="calle">Calle *</label>
-              <input
-                id="calle"
-                name="calle"
-                type="text"
-                placeholder="Avenida Principal"
-                value={form.calle}
-                onChange={handleChange}
-                required
-              />
+              <input id="calle" name="calle" type="text" placeholder="Avenida Principal"
+                value={form.calle} onChange={handleChange} required />
             </div>
-
             <div className="login-field">
               <label htmlFor="numExterior">Número Exterior *</label>
-              <input
-                id="numExterior"
-                name="numExterior"
-                type="text"
-                placeholder="123"
-                value={form.numExterior}
-                onChange={handleChange}
-                required
-              />
+              <input id="numExterior" name="numExterior" type="text" placeholder="123"
+                value={form.numExterior} onChange={handleChange} required />
             </div>
-
             <div className="login-field">
               <label htmlFor="numInterior">Número Interior</label>
-              <input
-                id="numInterior"
-                name="numInterior"
-                type="text"
-                placeholder="A"
-                value={form.numInterior}
-                onChange={handleChange}
-              />
+              <input id="numInterior" name="numInterior" type="text" placeholder="A"
+                value={form.numInterior} onChange={handleChange} />
             </div>
           </div>
 
           <div className="form-row">
             <div className="login-field">
               <label htmlFor="codigoPostal">Código Postal *</label>
-              <input
-                id="codigoPostal"
-                name="codigoPostal"
-                type="text"
-                placeholder="28001"
-                value={form.codigoPostal}
-                onChange={handleChange}
-                required
-              />
+              <input id="codigoPostal" name="codigoPostal" type="text" placeholder="06600"
+                value={form.codigoPostal} onChange={handleChange} required maxLength={5} />
             </div>
-
             <div className="login-field">
               <label htmlFor="colonia">Colonia *</label>
-              <input
-                id="colonia"
-                name="colonia"
-                type="text"
-                placeholder="Centro"
-                value={form.colonia}
-                onChange={handleChange}
-                required
-              />
+              <input id="colonia" name="colonia" type="text" placeholder="Centro"
+                value={form.colonia} onChange={handleChange} required />
             </div>
           </div>
 
           <div className="form-row">
             <div className="login-field">
-              <label htmlFor="delegacion">Delegación/Municipio *</label>
-              <input
-                id="delegacion"
+              <label htmlFor="delegacion">Alcaldía *</label>
+              <SelectAlcaldia
                 name="delegacion"
-                type="text"
-                placeholder="Cuauhtémoc"
                 value={form.delegacion}
                 onChange={handleChange}
-                required
+                className="login-select"
               />
             </div>
-
             <div className="login-field">
-              <label htmlFor="estado">Estado *</label>
+              <label htmlFor="estado">Estado</label>
+              {/* Estado fijo: siempre Ciudad de México */}
               <input
                 id="estado"
                 name="estado"
                 type="text"
-                placeholder="Ciudad de México"
-                value={form.estado}
-                onChange={handleChange}
-                required
+                value={ESTADO_CDMX}
+                readOnly
+                className="login-input-readonly"
               />
             </div>
           </div>
 
-          {/* Contraseña */}
           <div className="form-row-full">
             <h3 className="form-section-title">Seguridad</h3>
           </div>
@@ -255,65 +229,32 @@ export default function RegisterForm() {
             <div className="login-field">
               <label htmlFor="password">Contraseña *</label>
               <div className="login-password-wrap">
-                <input
-                  id="password"
-                  name="password"
+                <input id="password" name="password"
                   type={showPassword ? 'text' : 'password'}
                   placeholder="Mínimo 8 caracteres"
-                  value={form.password}
-                  onChange={handleChange}
-                  required
-                  minLength="8"
-                />
-                <button
-                  type="button"
-                  className="login-eye"
-                  onClick={() => setShowPassword(s => !s)}
-                  aria-label="Mostrar contraseña"
-                >
-                  {showPassword ? (
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" width="16" height="16">
-                      <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24" />
-                    </svg>
-                  ) : (
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" width="16" height="16">
-                      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
-                      <circle cx="12" cy="12" r="3" />
-                    </svg>
-                  )}
+                  value={form.password} onChange={handleChange} required minLength="8" />
+                <button type="button" className="login-eye"
+                  onClick={() => setShowPassword(s => !s)} aria-label="Mostrar contraseña">
+                  {showPassword
+                    ? <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" width="16" height="16"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24" /><line x1="1" y1="1" x2="23" y2="23" /></svg>
+                    : <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" width="16" height="16"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" /><circle cx="12" cy="12" r="3" /></svg>
+                  }
                 </button>
               </div>
             </div>
-
             <div className="login-field">
               <label htmlFor="confirmPassword">Confirmar Contraseña *</label>
               <div className="login-password-wrap">
-                <input
-                  id="confirmPassword"
-                  name="confirmPassword"
+                <input id="confirmPassword" name="confirmPassword"
                   type={showConfirmPassword ? 'text' : 'password'}
                   placeholder="Repite tu contraseña"
-                  value={form.confirmPassword}
-                  onChange={handleChange}
-                  required
-                  minLength="8"
-                />
-                <button
-                  type="button"
-                  className="login-eye"
-                  onClick={() => setShowConfirmPassword(s => !s)}
-                  aria-label="Mostrar contraseña"
-                >
-                  {showConfirmPassword ? (
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" width="16" height="16">
-                      <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24" />
-                    </svg>
-                  ) : (
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" width="16" height="16">
-                      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
-                      <circle cx="12" cy="12" r="3" />
-                    </svg>
-                  )}
+                  value={form.confirmPassword} onChange={handleChange} required minLength="8" />
+                <button type="button" className="login-eye"
+                  onClick={() => setShowConfirmPassword(s => !s)} aria-label="Mostrar contraseña">
+                  {showConfirmPassword
+                    ? <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" width="16" height="16"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24" /><line x1="1" y1="1" x2="23" y2="23" /></svg>
+                    : <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" width="16" height="16"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" /><circle cx="12" cy="12" r="3" /></svg>
+                  }
                 </button>
               </div>
             </div>
@@ -328,7 +269,6 @@ export default function RegisterForm() {
           </button>
 
         </form>
-
       </div>
     </div>
   )
