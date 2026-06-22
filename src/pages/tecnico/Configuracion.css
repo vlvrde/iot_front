@@ -1,0 +1,270 @@
+/* ══════════════════════════════════
+   CONFIGURACIÓN — Panel Técnico
+   ══════════════════════════════════ */
+
+.cfg-page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: #F1F5F9;
+}
+
+.cfg-hero {
+  background: #0F172A;
+  padding: 2.4rem 2.5rem 2rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.cfg-hero::before {
+  content: '';
+  position: absolute;
+  right: -80px; bottom: -80px;
+  width: 300px; height: 300px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(29,78,216,0.18) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.cfg-eyebrow {
+  display: block;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.35);
+  margin-bottom: 0.4rem;
+}
+
+.cfg-hero h1 {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(1.8rem, 3vw, 2.2rem);
+  font-weight: 900;
+  color: #fff;
+  letter-spacing: -0.04em;
+  margin: 0 0 0.25rem 0;
+}
+
+.cfg-hero p {
+  font-size: 0.82rem;
+  color: rgba(255,255,255,0.38);
+  margin: 0;
+}
+
+.cfg-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.2rem;
+  padding: 1.5rem 2rem 2rem;
+}
+
+.cfg-card {
+  background: #fff;
+  border-radius: 18px;
+  border: 1px solid #E2E8F0;
+  padding: 1.8rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.cfg-card-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cfg-card-icon--blue   { background: #DBEAFE; color: #1D4ED8; }
+.cfg-card-icon--indigo { background: #EFF6FF; color: #2563EB; }
+
+.cfg-card-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #0F172A;
+  letter-spacing: -0.02em;
+  margin: 0;
+}
+
+.cfg-card-sub {
+  font-size: 0.82rem;
+  color: #94A3B8;
+  line-height: 1.55;
+  margin: 0;
+}
+
+/* ── Avatar ── */
+.cfg-avatar-wrap {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+}
+
+.cfg-avatar {
+  position: relative;
+  width: 88px;
+  height: 88px;
+  flex-shrink: 0;
+}
+
+.cfg-avatar img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #DBEAFE;
+}
+
+.cfg-avatar-placeholder {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: #EFF6FF;
+  border: 3px dashed #BFDBFE;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #93C5FD;
+}
+
+.cfg-avatar-btn {
+  position: absolute;
+  bottom: 0; right: 0;
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  background: #1D4ED8;
+  color: #fff;
+  border: 2px solid #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.cfg-avatar-btn:hover { background: #1E40AF; }
+.cfg-avatar-btn svg { width: 13px; height: 13px; stroke: #fff; }
+
+.cfg-avatar-info {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.cfg-avatar-info strong {
+  font-family: 'Syne', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #0F172A;
+}
+
+.cfg-avatar-info span {
+  font-size: 0.78rem;
+  color: #94A3B8;
+}
+
+.cfg-file-name {
+  font-size: 0.75rem;
+  color: #1D4ED8;
+  margin: 0;
+  font-weight: 500;
+}
+
+/* ── Form ── */
+.cfg-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
+.cfg-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.cfg-field label {
+  font-size: 0.74rem;
+  font-weight: 600;
+  color: #334155;
+}
+
+.cfg-field input {
+  padding: 0.65rem 0.9rem;
+  border: 1.5px solid #E2E8F0;
+  border-radius: 10px;
+  font-size: 0.875rem;
+  color: #0F172A;
+  background: #F8FAFC;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  font-family: inherit;
+}
+
+.cfg-field input:focus {
+  border-color: #1D4ED8;
+  box-shadow: 0 0 0 3px rgba(29,78,216,0.10);
+  background: #fff;
+}
+
+.cfg-msg {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  border-radius: 10px;
+  font-size: 0.82rem;
+  font-weight: 500;
+}
+
+.cfg-msg--ok  { background: #D1FAE5; color: #065F46; }
+.cfg-msg--err { background: #FEE2E2; color: #991B1B; }
+
+/* ── Botón ── */
+.cfg-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.8rem 1.4rem;
+  border: none;
+  border-radius: 10px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.2s;
+  margin-top: auto;
+}
+
+.cfg-btn--primary {
+  background: #1D4ED8;
+  color: #fff;
+}
+
+.cfg-btn--primary:hover:not(:disabled) {
+  background: #1E40AF;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(29,78,216,0.28);
+}
+
+.cfg-btn:disabled { opacity: 0.55; cursor: not-allowed; }
+
+.cfg-spinner {
+  width: 16px; height: 16px;
+  border: 2px solid rgba(255,255,255,0.3);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: cfg-spin 0.7s linear infinite;
+  display: inline-block;
+}
+
+@keyframes cfg-spin { to { transform: rotate(360deg); } }
+
+@media (max-width: 768px) {
+  .cfg-hero { padding: 1.8rem 1.5rem; }
+  .cfg-grid { grid-template-columns: 1fr; padding: 1.2rem; }
+}

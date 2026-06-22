@@ -223,7 +223,10 @@ export default function ValidarQR() {
               <div className="qr-tecnico-card">
                 <div className="qr-tecnico-avatar">
                   {resultado.tecnico?.foto
-                    ? <img src={resultado.tecnico.foto} alt="Técnico" />
+                    ? <img
+                        src={`${import.meta.env.VITE_API_URL.replace(/\/api$/, '')}${resultado.tecnico.foto}`}
+                        alt="Técnico"
+                      />
                     : <UserIcon />
                   }
                 </div>

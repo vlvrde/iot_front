@@ -4,7 +4,6 @@ import AdminLayout from '../../components/admin/AdminLayout'
 import bgImage from '../../assets/images/background.png'
 import './Mapa.css'
 
-/* ── Config colores por estado ── */
 const ESTADO_CFG = {
   pendiente:  { color: '#F59E0B', label: 'Pendiente'  },
   asignado:   { color: '#6366f1', label: 'Asignado'   },
@@ -19,61 +18,60 @@ const DISP_LABEL = {
 
 const Ico = {
   refresh: <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.47"/></svg>,
-  map:     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>,
+  map:     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>,
+  nocoord: <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>,
 }
 
 export default function AdminMapa() {
   const { authHeaders } = useAuth()
-  const mapRef     = useRef(null)   // referencia al div del mapa
-  const leafletRef = useRef(null)   // instancia de Leaflet map
-  const markersRef = useRef([])     // markers actuales
+  const mapRef      = useRef(null)
+  const leafletRef  = useRef(null)
+  const markersRef  = useRef([])
 
-  const [solicitudes, setSolicitudes] = useState([])
-  const [loading,     setLoading]     = useState(true)
-  const [error,       setError]       = useState('')
-  const [filtroEstado, setFiltroEstado] = useState('')
-  const [leafletReady, setLeafletReady] = useState(false)
+  const [solicitudes,   setSolicitudes]   = useState([])
+  const [loading,       setLoading]       = useState(true)
+  const [error,         setError]         = useState('')
+  const [filtroEstado,  setFiltroEstado]  = useState('')
+  const [leafletReady,  setLeafletReady]  = useState(false)
+  const [selectedId,    setSelectedId]    = useState(null)
 
-  /* ── Cargar Leaflet dinámicamente (sin npm install) ── */
+  // ── Cargar Leaflet vía CDN ────────────────────────────────────
   useEffect(() => {
-    // Inyectar CSS de Leaflet si no está
     if (!document.getElementById('leaflet-css')) {
-      const link  = document.createElement('link')
-      link.id     = 'leaflet-css'
-      link.rel    = 'stylesheet'
-      link.href   = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css'
+      const link = document.createElement('link')
+      link.id    = 'leaflet-css'
+      link.rel   = 'stylesheet'
+      link.href  = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css'
       document.head.appendChild(link)
     }
-    // Cargar script de Leaflet
     if (window.L) { setLeafletReady(true); return }
-    const script  = document.createElement('script')
-    script.src    = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js'
-    script.onload = () => setLeafletReady(true)
+    const script    = document.createElement('script')
+    script.src      = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js'
+    script.onload   = () => setLeafletReady(true)
+    script.onerror  = () => setError('No se pudo cargar la librería del mapa.')
     document.head.appendChild(script)
   }, [])
 
-  /* ── Inicializar mapa cuando Leaflet esté listo ── */
+  // ── Inicializar mapa ──────────────────────────────────────────
   useEffect(() => {
     if (!leafletReady || !mapRef.current || leafletRef.current) return
     const L = window.L
-
     leafletRef.current = L.map(mapRef.current, {
-      center: [19.4326, -99.1332], // CDMX
-      zoom:   11,
+      center: [19.4326, -99.1332],
+      zoom: 11,
+      zoomControl: true,
     })
-
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '© <a href="https://www.openstreetmap.org/">OpenStreetMap</a>',
       maxZoom: 19,
     }).addTo(leafletRef.current)
   }, [leafletReady])
 
-  /* ── Dibujar markers cuando cambien las solicitudes ── */
+  // ── Dibujar markers ───────────────────────────────────────────
   useEffect(() => {
     if (!leafletReady || !leafletRef.current || !window.L) return
     const L = window.L
 
-    // Limpiar markers anteriores
     markersRef.current.forEach(m => m.remove())
     markersRef.current = []
 
@@ -81,44 +79,54 @@ export default function AdminMapa() {
       ? solicitudes.filter(s => s.estado === filtroEstado)
       : solicitudes
 
-    filtradas.forEach(s => {
-      if (!s.latitud || !s.longitud) return
-      const cfg   = ESTADO_CFG[s.estado] || { color: '#9CA3AF', label: s.estado }
-      const icon  = L.divIcon({
+    // Solo markers para solicitudes con coordenadas
+    const conCoords = filtradas.filter(s => s.latitud && s.longitud)
+
+    conCoords.forEach(s => {
+      const cfg  = ESTADO_CFG[s.estado] || { color: '#9CA3AF', label: s.estado }
+      const icon = L.divIcon({
         html: `<div style="
-          width:14px;height:14px;border-radius:50%;
+          width:16px;height:16px;border-radius:50%;
           background:${cfg.color};
           border:3px solid #fff;
-          box-shadow:0 2px 8px rgba(0,0,0,0.3);
+          box-shadow:0 2px 10px rgba(0,0,0,0.35);
+          transition:transform 0.15s;
         "></div>`,
         className: '',
-        iconSize: [14, 14],
-        iconAnchor: [7, 7],
+        iconSize: [16, 16],
+        iconAnchor: [8, 8],
       })
 
       const marker = L.marker([s.latitud, s.longitud], { icon })
         .addTo(leafletRef.current)
         .bindPopup(`
-          <div style="font-family:'DM Sans',sans-serif;min-width:180px;">
-            <strong style="font-size:0.85rem;color:#0A0F1E;">${DISP_LABEL[s.dispositivo_tipo] || s.dispositivo_tipo}</strong>
-            <br/>
-            <span style="font-size:0.72rem;color:${cfg.color};font-weight:700;">${cfg.label}</span>
-            <br/>
-            <span style="font-size:0.72rem;color:#6B7280;">${s.colonia}, ${s.delegacion}</span>
+          <div style="font-family:'DM Sans',sans-serif;min-width:200px;padding:4px 0;">
+            <div style="font-size:0.85rem;font-weight:700;color:#0A0F1E;margin-bottom:4px;">
+              ${DISP_LABEL[s.dispositivo_tipo] || s.dispositivo_tipo}
+            </div>
+            <div style="display:inline-block;padding:2px 8px;border-radius:99px;
+              font-size:0.68rem;font-weight:700;margin-bottom:6px;
+              color:${cfg.color};background:${cfg.color}18;">
+              ${cfg.label}
+            </div>
+            <div style="font-size:0.72rem;color:#6B7280;">
+              📍 ${s.colonia}, ${s.delegacion}
+            </div>
           </div>
-        `)
+        `, { maxWidth: 240 })
+        .on('click', () => setSelectedId(s.id))
 
       markersRef.current.push(marker)
     })
 
-    // Ajustar vista si hay markers
+    // Ajustar zoom a los markers si hay alguno
     if (markersRef.current.length > 0) {
       const group = L.featureGroup(markersRef.current)
-      leafletRef.current.fitBounds(group.getBounds().pad(0.15))
+      leafletRef.current.fitBounds(group.getBounds().pad(0.2))
     }
   }, [solicitudes, filtroEstado, leafletReady])
 
-  /* ── Cargar datos del backend ── */
+  // ── Cargar datos ──────────────────────────────────────────────
   const cargarSolicitudes = () => {
     const API = import.meta.env.VITE_API_URL
     setLoading(true); setError('')
@@ -131,16 +139,15 @@ export default function AdminMapa() {
 
   useEffect(() => { cargarSolicitudes() }, [])
 
-  /* ── Estadísticas por estado ── */
+  // ── Stats ─────────────────────────────────────────────────────
+  const filtradas   = filtroEstado ? solicitudes.filter(s => s.estado === filtroEstado) : solicitudes
+  const conCoords   = filtradas.filter(s => s.latitud && s.longitud).length
+  const sinCoords   = filtradas.filter(s => !s.latitud || !s.longitud).length
+
   const stats = Object.entries(ESTADO_CFG).map(([estado, cfg]) => ({
-    ...cfg,
-    estado,
+    ...cfg, estado,
     count: solicitudes.filter(s => s.estado === estado).length,
   }))
-
-  const totalVisible = filtroEstado
-    ? solicitudes.filter(s => s.estado === filtroEstado).length
-    : solicitudes.length
 
   return (
     <AdminLayout titulo="Mapa de Incidencias">
@@ -152,21 +159,19 @@ export default function AdminMapa() {
           <span className="mp-hero-eyebrow">Panel de administración · IoTech</span>
           <h1 className="mp-hero-title">Mapa de Incidencias</h1>
           <p className="mp-hero-sub">
-            {loading ? '…' : `${solicitudes.length} solicitud${solicitudes.length !== 1 ? 'es' : ''} activa${solicitudes.length !== 1 ? 's' : ''} en el mapa`}
+            {loading ? '…' : `${solicitudes.length} solicitud${solicitudes.length !== 1 ? 'es' : ''} activa${solicitudes.length !== 1 ? 's' : ''}`}
           </p>
         </div>
       </div>
 
-      {/* Stats + filtros */}
+      {/* Controls */}
       <div className="mp-controls">
         <div className="mp-stats">
           {stats.map(s => (
-            <button
-              key={s.estado}
+            <button key={s.estado}
               className={`mp-stat ${filtroEstado === s.estado ? 'active' : ''}`}
               onClick={() => setFiltroEstado(filtroEstado === s.estado ? '' : s.estado)}
-              style={{ '--sc': s.color }}
-            >
+              style={{ '--sc': s.color }}>
               <span className="mp-stat-dot" style={{ background: s.color }} />
               <span className="mp-stat-label">{s.label}</span>
               <strong className="mp-stat-val" style={{ color: s.color }}>{s.count}</strong>
@@ -183,9 +188,18 @@ export default function AdminMapa() {
         </button>
       </div>
 
+      {/* Aviso sin coordenadas */}
+      {sinCoords > 0 && (
+        <div className="mp-notice">
+          {Ico.nocoord}
+          <span><strong>{sinCoords}</strong> solicitud{sinCoords !== 1 ? 'es' : ''} sin coordenadas — se muestran en el panel pero no en el mapa.
+          Las nuevas solicitudes se geocodifican automáticamente al crearse.</span>
+        </div>
+      )}
+
       {error && <div className="mp-error">{error}</div>}
 
-      {/* Mapa + panel lateral */}
+      {/* Layout mapa + panel */}
       <div className="mp-layout">
 
         {/* Mapa */}
@@ -198,37 +212,53 @@ export default function AdminMapa() {
             </div>
           )}
           <div className="mp-map-badge">
-            {Ico.map} {totalVisible} marcador{totalVisible !== 1 ? 'es' : ''}
+            {Ico.map} {conCoords} en mapa
           </div>
         </div>
 
-        {/* Panel lateral con lista */}
+        {/* Panel lateral */}
         <div className="mp-panel">
-          <p className="mp-panel-title">
-            {filtroEstado ? ESTADO_CFG[filtroEstado]?.label : 'Todas las incidencias'}
-          </p>
+          <div className="mp-panel-header">
+            <p className="mp-panel-title">
+              {filtroEstado ? ESTADO_CFG[filtroEstado]?.label : 'Todas'}
+            </p>
+            <span className="mp-panel-count">{filtradas.length}</span>
+          </div>
+
           <div className="mp-list">
-            {(filtroEstado
-              ? solicitudes.filter(s => s.estado === filtroEstado)
-              : solicitudes
-            ).map(s => {
-              const cfg = ESTADO_CFG[s.estado] || { color: '#9CA3AF', label: s.estado }
+            {filtradas.length === 0 && !loading && (
+              <p className="mp-empty">Sin solicitudes activas.</p>
+            )}
+            {filtradas.map(s => {
+              const cfg      = ESTADO_CFG[s.estado] || { color: '#9CA3AF', label: s.estado }
+              const tieneCoords = !!(s.latitud && s.longitud)
               return (
-                <div key={s.id} className="mp-item">
+                <div key={s.id}
+                  className={`mp-item ${selectedId === s.id ? 'mp-item--selected' : ''}`}
+                  onClick={() => {
+                    setSelectedId(s.id)
+                    // Si tiene coords, centrar el mapa en ese marker
+                    if (tieneCoords && leafletRef.current) {
+                      leafletRef.current.setView([s.latitud, s.longitud], 15)
+                    }
+                  }}>
                   <span className="mp-item-dot" style={{ background: cfg.color }} />
                   <div className="mp-item-info">
-                    <span className="mp-item-tipo">{DISP_LABEL[s.dispositivo_tipo] || s.dispositivo_tipo}</span>
-                    <span className="mp-item-loc">{Ico.map} {s.colonia}, {s.delegacion}</span>
+                    <span className="mp-item-tipo">
+                      {DISP_LABEL[s.dispositivo_tipo] || s.dispositivo_tipo}
+                    </span>
+                    <span className="mp-item-loc">
+                      {tieneCoords ? Ico.map : Ico.nocoord}
+                      {s.colonia}, {s.delegacion}
+                    </span>
                   </div>
-                  <span className="mp-item-badge" style={{ color: cfg.color, background: `${cfg.color}15` }}>
+                  <span className="mp-item-badge"
+                    style={{ color: cfg.color, background: `${cfg.color}15` }}>
                     {cfg.label}
                   </span>
                 </div>
               )
             })}
-            {solicitudes.length === 0 && !loading && (
-              <p className="mp-empty">No hay incidencias activas con coordenadas.</p>
-            )}
           </div>
         </div>
 

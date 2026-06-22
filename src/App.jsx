@@ -21,6 +21,8 @@ import ValidarQR        from './pages/cliente/ValidarQR'
 // Técnico
 import Citas       from './pages/tecnico/Citas'
 import DetalleCita from './pages/tecnico/DetalleCita'
+import Configuracion from './pages/tecnico/Configuracion'
+
 
 // Admin
 import AdminDashboard  from './pages/admin/Dashboard'
@@ -47,6 +49,8 @@ function App() {
           <Route path="/catalogo/sensor-gas"      element={<Catalog />} />
           <Route path="/catalogo/sensor-agua"     element={<CatalogWater />} />
           <Route path="/catalogo/apertura-zaguan" element={<SystemOpeningPage />} />
+          <Route path="/tecnico/configuracion" element={<Configuracion />} />
+
 
           {/* ── Cliente ──────────────────────────────────────── */}
           <Route path="/cliente/dashboard" element={
